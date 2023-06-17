@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service;
 public class DashboardServiceDefault implements DashboardService {
     @Override
     public String getDashboard() {
-        return "dashboard.html";
+        return "dashboard";
     }
 }
