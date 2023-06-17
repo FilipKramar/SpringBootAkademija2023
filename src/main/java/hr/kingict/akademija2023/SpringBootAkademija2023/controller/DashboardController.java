@@ -3,11 +3,12 @@ package hr.kingict.akademija2023.SpringBootAkademija2023.controller;
 import hr.kingict.akademija2023.SpringBootAkademija2023.service.DashboardService;
 import hr.kingict.akademija2023.SpringBootAkademija2023.service.PageSuffixService;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import util.FilenameUtil;
 
-@RestController
+@Controller
 public class DashboardController {
 
     private final DashboardService dashboardService;
