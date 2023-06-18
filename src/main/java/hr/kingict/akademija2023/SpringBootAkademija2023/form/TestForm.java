@@ -9,7 +9,7 @@ public class TestForm {
     private String name;
 
     private String description;
-@Min(value=0)
+    @Min(value=0)
     private Integer order;
 
     public String getName() {

@@ -3,13 +3,17 @@ package hr.kingict.akademija2023.SpringBootAkademija2023.service;
 import com.amadeus.Amadeus;
 import com.amadeus.Params;
 import com.amadeus.referencedata.Locations;
+import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.resources.Location;
+import hr.kingict.akademija2023.SpringBootAkademija2023.dto.FlightSearchResultDto;
 import hr.kingict.akademija2023.SpringBootAkademija2023.dto.LocationDTO;
+import hr.kingict.akademija2023.SpringBootAkademija2023.mapper.FlightOffersSearchFlightSearchResultDtoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +22,9 @@ import java.util.List;
 public class AmadeusService {
     @Autowired
     private Amadeus amadeus;
+
+    @Autowired
+    private FlightOffersSearchFlightSearchResultDtoMapper flightSearchResultDtoMapper;
 
     Logger logger = LoggerFactory.getLogger((AmadeusService.class));
 
@@ -37,8 +44,36 @@ public class AmadeusService {
 
             return Collections.emptyList();
 
-
         }
     }
+
+
+    public List<FlightSearchResultDto> searchFlights(String originLocationCode, String destinationLocationCode,LocalDate departureDate, LocalDate returnDate, Integer adults) {
+        try {
+            Params params = Params.with("originLocationCode", originLocationCode)
+                    .and("destinationLocationCode", destinationLocationCode)
+                    .and("departureDate", departureDate.toString())
+                    .and("adults", adults)
+                    .and("nonStop",true)
+                    .and("max",5);
+            if(returnDate!=null){
+                params.and("returnDate", returnDate.toString());
+            }
+
+            List<FlightOfferSearch> flightOfferSearches = Arrays.asList(amadeus.shopping.flightOffersSearch.get(params));
+
+            List<FlightSearchResultDto> flightSearchResultDtos = flightOfferSearches.stream()
+                    .map(flightOfferSearch -> flightSearchResultDtoMapper.map(flightOfferSearch))
+                    .toList();
+
+            return flightSearchResultDtos;
+        } catch (Exception e) {
+
+            logger.error("Searcch flight error", e);
+
+            return Collections.emptyList();
+        }
+    }
+
 
     }
