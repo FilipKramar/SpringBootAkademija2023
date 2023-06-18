@@ -8,6 +8,7 @@ import com.amadeus.resources.Location;
 import hr.kingict.akademija2023.SpringBootAkademija2023.dto.FlightSearchResultDto;
 import hr.kingict.akademija2023.SpringBootAkademija2023.dto.LocationDTO;
 import hr.kingict.akademija2023.SpringBootAkademija2023.mapper.FlightOffersSearchFlightSearchResultDtoMapper;
+import hr.kingict.akademija2023.SpringBootAkademija2023.mapper.FlightSearchEntityFlightSearchResultDtoMapper;
 import hr.kingict.akademija2023.SpringBootAkademija2023.mapper.FlightSearchResultDtoFlightSearchResultEntityMapper;
 import hr.kingict.akademija2023.SpringBootAkademija2023.model.FlightSearch;
 import hr.kingict.akademija2023.SpringBootAkademija2023.model.FlightSearchResultEntity;
@@ -28,7 +29,8 @@ import java.util.List;
 public class AmadeusService {
     @Autowired
     private Amadeus amadeus;
-
+@Autowired
+private FlightSearchEntityFlightSearchResultDtoMapper flightSearchEntityFlightSearchResultDtoMapper;
     @Autowired
     private FlightOffersSearchFlightSearchResultDtoMapper flightSearchResultDtoMapper;
 
@@ -66,6 +68,16 @@ public class AmadeusService {
     public List<FlightSearchResultDto> searchFlights(String originLocationCode, String destinationLocationCode,LocalDate departureDate, LocalDate returnDate, Integer adults) {
         try {
 
+           FlightSearch flightSearch= flightSearchRepository.findOneByOriginLocationCodeAndDestinationLocationCodeAndDepartureDateAndReturnDateAndAdults( originLocationCode,  destinationLocationCode, departureDate,  returnDate,  adults);
+
+
+           if (flightSearch!=null){
+               List<FlightSearchResultEntity> flightSearchResultEntityList = flightSearch.getFlightSearchResultEntityList();
+               logger.warn("dohvatio podatkee uwu");
+             return   flightSearchResultEntityList.stream()
+                       .map(flightSearchResultEntity -> flightSearchEntityFlightSearchResultDtoMapper.map(flightSearchResultEntity))
+                       .toList();
+           }
             FlightSearch flightSeach=new FlightSearch();
             flightSeach.setDestinationLocationCode(destinationLocationCode);
             flightSeach.setOriginLocationCode(originLocationCode);
@@ -103,6 +115,8 @@ public class AmadeusService {
                                 flightSearchResultEntityRepository.save(flightSearchResultEntity);
                             }
                     );
+
+            logger.warn("dohvartio podatke iz amadeusa lel xD");
             return flightSearchResultDtos;
         } catch (Exception e) {
 
