@@ -2,27 +2,29 @@ package hr.kingict.akademija2023.SpringBootAkademija2023.dto;
 
 public class LocationDTO {
 
-    private  String id;
+    private  String iataCode;
 
-    private  String subType;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private  String name;
 
     private String keyword;
 
-    public String getId() {
-        return id;
+    public String getIataCode() {
+        return iataCode;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIataCode(String iataCode) {
+        this.iataCode = iataCode;
     }
 
-    public String getSubType() {
-        return subType;
-    }
 
-    public void setSubType(String subType) {
-        this.subType = subType;
-    }
 
     public String getKeyword() {
         return keyword;
