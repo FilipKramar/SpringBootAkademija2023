@@ -16,6 +16,8 @@ public class LocationDTO {
 
     private String keyword;
 
+    private String detailedName;
+
     public String getIataCode() {
         return iataCode;
     }
@@ -24,7 +26,13 @@ public class LocationDTO {
         this.iataCode = iataCode;
     }
 
+    public String getDetailedName() {
+        return detailedName;
+    }
 
+    public void setDetailedName(String detailedName) {
+        this.detailedName = detailedName;
+    }
 
     public String getKeyword() {
         return keyword;

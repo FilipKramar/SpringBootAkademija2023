@@ -16,6 +16,7 @@ public class LocationLocationdtoMapper {
         LocationDTO locationDTO=new LocationDTO();
         locationDTO.setName(location.getName());
         locationDTO.setIataCode(location.getIataCode());
+        locationDTO.setDetailedName(location.getDetailedName());
 
         return locationDTO;
     }
