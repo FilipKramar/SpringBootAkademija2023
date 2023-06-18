@@ -8,8 +8,11 @@ import com.amadeus.resources.Location;
 import hr.kingict.akademija2023.SpringBootAkademija2023.dto.FlightSearchResultDto;
 import hr.kingict.akademija2023.SpringBootAkademija2023.dto.LocationDTO;
 import hr.kingict.akademija2023.SpringBootAkademija2023.mapper.FlightOffersSearchFlightSearchResultDtoMapper;
+import hr.kingict.akademija2023.SpringBootAkademija2023.mapper.FlightSearchResultDtoFlightSearchResultEntityMapper;
 import hr.kingict.akademija2023.SpringBootAkademija2023.model.FlightSearch;
+import hr.kingict.akademija2023.SpringBootAkademija2023.model.FlightSearchResultEntity;
 import hr.kingict.akademija2023.SpringBootAkademija2023.repository.FlightSearchRepository;
+import hr.kingict.akademija2023.SpringBootAkademija2023.repository.FlightSearchResultEntityRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +34,11 @@ public class AmadeusService {
 
     @Autowired
     private FlightSearchRepository flightSearchRepository;
+
+    @Autowired
+    private FlightSearchResultEntityRepository flightSearchResultEntityRepository;
+    @Autowired
+    private FlightSearchResultDtoFlightSearchResultEntityMapper dtoFlightSearchResultEntityMapper;
 
     Logger logger = LoggerFactory.getLogger((AmadeusService.class));
 
@@ -88,6 +96,13 @@ public class AmadeusService {
                     .map(flightOfferSearch -> flightSearchResultDtoMapper.map(flightOfferSearch))
                     .toList();
 
+            flightSearchResultDtos.stream()
+                    .map(flightSearchResultDto -> dtoFlightSearchResultEntityMapper.map(flightSearchResultDto))
+                    .forEach(flightSearchResultEntity ->
+                            {   flightSearchResultEntity.setFlightSearch(flightSeach);
+                                flightSearchResultEntityRepository.save(flightSearchResultEntity);
+                            }
+                    );
             return flightSearchResultDtos;
         } catch (Exception e) {
 
