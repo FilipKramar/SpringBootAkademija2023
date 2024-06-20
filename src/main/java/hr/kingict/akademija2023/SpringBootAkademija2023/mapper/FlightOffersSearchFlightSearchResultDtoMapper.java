@@ -1,5 +1,4 @@
 package hr.kingict.akademija2023.SpringBootAkademija2023.mapper;
-
 import com.amadeus.resources.FlightOfferSearch;
 import com.amadeus.shopping.FlightOffersSearch;
 import hr.kingict.akademija2023.SpringBootAkademija2023.dto.FlightSearchResultDto;
